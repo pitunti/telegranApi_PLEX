@@ -1,4 +1,5 @@
 const { sendPhoto } = require('pitunti_telegramapi');
+const express=require("express");
 const mongoose = require('mongoose');
 const PeliculasModel = require('./models/PeliculasModel');
 const plexFetch = require('./helpers/plexFetch');
@@ -16,8 +17,8 @@ const {
 
 
 mongoose.connect(`mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB}`, { useNewUrlParser: true}).then(()=>{
-    getPlexRecentsMovies();
 });
+
 
 
 const getPlexRecentsMovies=()=>{
@@ -83,3 +84,15 @@ const enviarFoto=({thumb,text})=>{
    
 }
 
+
+
+
+const app = express();
+app.post("/",(req,res)=>{
+    getPlexRecentsMovies();
+    res.sendStatus(200);
+})
+
+app.listen(2020,()=>{
+    console.log("listen in port 2020")
+});
