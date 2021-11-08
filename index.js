@@ -37,11 +37,12 @@ const sendToTelegram =async(data)=>{
 
   peliculasNuevas.forEach((elemento,i)=>{
       
-      const {key,year,type,season,thumb,title,description} = elemento;
-      const seasonText=type=="season"?season+"\n":"\n";
+      const {key,year,type,season,thumb,title,description,librarySectionTitle} = elemento;
+      const seasonText=type=="season"?season+"\n":"Movie\n";
       const text=`
 <b>🎬 Title</b>:${title}
 ${seasonText}
+Categoria:${librarySectionTitle}\n
 <b>🗓️ Year</b>:${year}\n
 Info: ${description}
       `
@@ -51,14 +52,16 @@ Info: ${description}
 
       const interval=(i+1)*5000;
 
-      setTimeout(() => {
-           enviarFoto({thumb,text}).then(data=>{
-                pelicula.save().then(()=>{}); 
-            }).catch(error=>{
-              console.log(error)
-            })
+      console.log(text);
 
-      },interval)
+          setTimeout(() => {
+               enviarFoto({thumb,text}).then(data=>{
+                    pelicula.save().then(()=>{}); 
+                }).catch(error=>{
+                  console.log(error)
+                })
+
+          },interval)
   })
   
 
