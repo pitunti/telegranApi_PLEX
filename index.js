@@ -71,11 +71,10 @@ const enviarFoto=({thumb,text})=>{
     return new Promise((resolve,reject)=>{
      
             sendPhoto({
-                //  token:TOKEN_TELEGRAM,
-                token:"695529965:AAHtkZfYD4BhrAvhL2K-Lsls0TZ3I6FlFVc",
+                 token:TOKEN_TELEGRAM,
                  photo:encodeURIComponent(thumb),
                  caption:encodeURIComponent(text),
-                //  chatId:CHAT_ID
+                 chatId:CHAT_ID
                 })
                  .then((msg)=>{
                      const {ok}=msg;
