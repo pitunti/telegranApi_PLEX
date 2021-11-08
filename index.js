@@ -32,7 +32,11 @@ const sendToTelegram =async(data)=>{
   const peliculasRegistradas=await PeliculasModel.find({});
   const id_peliculasRegistradas=peliculasRegistradas.map(pelicula=>pelicula.id_plex);
   const peliculasNuevas=data.filter((elemento)=>!id_peliculasRegistradas.includes(elemento.key));
-  peliculasNuevas.forEach(elemento=>{
+
+
+
+  peliculasNuevas.forEach((elemento,i)=>{
+      
       const {key,year,type,season,thumb,title,description} = elemento;
       const seasonText=type=="season"?season+"\n":"\n";
       const text=`
@@ -45,11 +49,16 @@ Info: ${description}
           id_plex:key
       })
 
-     enviarFoto({thumb,text}).then(data=>{
-          pelicula.save().then(()=>{}); 
-      }).catch(error=>{
-        console.log(error)
-      })
+      const interval=(i+1)*5000;
+
+      setTimeout(() => {
+           enviarFoto({thumb,text}).then(data=>{
+                pelicula.save().then(()=>{}); 
+            }).catch(error=>{
+              console.log(error)
+            })
+
+      },interval)
   })
   
 
@@ -62,11 +71,11 @@ const enviarFoto=({thumb,text})=>{
     return new Promise((resolve,reject)=>{
      
             sendPhoto({
-                 token:TOKEN_TELEGRAM,
-                // token:"695529965:AAHtkZfYD4BhrAvhL2K-Lsls0TZ3I6FlFVc",
+                //  token:TOKEN_TELEGRAM,
+                token:"695529965:AAHtkZfYD4BhrAvhL2K-Lsls0TZ3I6FlFVc",
                  photo:encodeURIComponent(thumb),
                  caption:encodeURIComponent(text),
-                 chatId:CHAT_ID
+                //  chatId:CHAT_ID
                 })
                  .then((msg)=>{
                      const {ok}=msg;
